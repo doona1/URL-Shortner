@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>URL Shortener</title>  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <div class="container text-center position-relative">
+        <!-- Circular Refresh button with just an icon -->
+        <button class="top-right" onclick="resetForm()">
+            <i class="fas fa-sync-alt"></i> <!-- Only refresh icon -->
+        </button>
+
+        <h2 class="mb-4">🔗 URL Shortener</h2>
+        <form method="POST" class="mb-3">
+            <input type="url" name="long_url" class="form-control mb-2" placeholder="Enter URL" required style="border: 2px;border-color: black;">
+            <button type="submit" class="btn btn-primary">Shorten URL</button>
+        </form>
+        {% if short_url %}
+        <div class="short-url-box p-3 bg-light border rounded">
+            <p>Your short URL:</p>
+            <div class="input-group">
+                <input type="text" id="short-url" class="form-control text-center" value="{{ short_url }}" readonly>
+                <div class="input-group-append">
+                    <button class="copy-btn" onclick="copyToClipboard()">
+                        <i class="fas fa-copy"></i> <!-- FontAwesome Copy Icon -->
+                    </button>
+                </div>
+            </div>
+            <a href="{{ short_url }}" target="_blank" class="btn btn-success mt-2">Open Link</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            let shortUrl = document.getElementById("short-url");
+            shortUrl.select();
+            document.execCommand("copy");
+            alert("Copied: " + shortUrl.value);
+        }
+
+        function resetForm() {
+            window.location.href = "/";  // Redirects to home page to reset
+        }
+    </script>
+</body>
+</html>
